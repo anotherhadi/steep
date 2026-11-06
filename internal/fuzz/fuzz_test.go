@@ -178,6 +178,9 @@ func TestWithoutWordlist(t *testing.T) {
 }
 
 func TestHTTP2(t *testing.T) {
+	if raceEnabled {
+		t.Skip("ffuf's response timer races over HTTP/2")
+	}
 	var got []string
 	srv := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		got = append(got, r.Proto)

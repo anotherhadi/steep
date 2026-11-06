@@ -10,6 +10,14 @@ import (
 	"github.com/sectui/steep/internal/ui/response"
 )
 
+// budget is d, scaled for the race detector, which slows this code ~10x.
+func budget(d time.Duration) time.Duration {
+	if raceEnabled {
+		return 10 * d
+	}
+	return d
+}
+
 // A response of megabytes on one line (minified JS) stays fluid.
 func TestBigResponse(t *testing.T) {
 	for _, wrap := range []bool{true, false} {
@@ -20,7 +28,7 @@ func TestBigResponse(t *testing.T) {
 		for range 10 {
 			r.View(120, 40, true, "")
 		}
-		if d := time.Since(start); d > 2*time.Second {
+		if d := time.Since(start); d > budget(2*time.Second) {
 			t.Errorf("wrap=%v: 10 frames took %v", wrap, d)
 		}
 	}
@@ -38,14 +46,14 @@ func TestBigRequest(t *testing.T) {
 		do(m, tea.KeyPressMsg{Code: 'j', Text: "j"})
 		m.View()
 	}
-	if d := time.Since(start); d > 2*time.Second {
+	if d := time.Since(start); d > budget(2*time.Second) {
 		t.Errorf("20 moves took %v", d)
 	}
 	start = time.Now()
 	typeKeys(m, "ix")
 	key(m, tea.KeyEscape, 0)
 	m.View()
-	if d := time.Since(start); d > time.Second {
+	if d := time.Since(start); d > budget(time.Second) {
 		t.Errorf("an edit took %v", d)
 	}
 }

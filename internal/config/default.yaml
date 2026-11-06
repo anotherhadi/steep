@@ -1,0 +1,185 @@
+# steep defaults: the reference for every setting.
+#
+# Do not copy this file: put only what you change in one of these (later wins):
+#
+#   ~/.config/sectui/config.yaml       shared by every sectui tool (theme, keys)
+#   ~/.config/steep/config.yaml        steep, everywhere
+#   <collection>/config.yaml           the collection being opened
+#   STEEP_* environment variables      e.g. STEEP_REQUEST__CONCURRENCY=10
+#   command-line flags                 e.g. --rate 50, -c request.concurrency=40
+
+collection: ""          # requests/, runs/, config.yaml; empty: ~/.local/share/steep
+createCollection: true  # create the collection's folder if missing
+confirmAbove: 10000     # ask before a bigger run (0: never)
+shortcuts: {}           # wordlist dirs, e.g. {w: ~/wordlists} for file{$w/common}
+pickerDir: ""           # where ctrl+t starts in an empty file{}; empty: cwd
+filePicker: fzf         # sh -c; prints the pick, or writes it to {file} (yazi --chooser-file={file})
+onRunEnd: ""            # sh -c at the end of a run; gets RUN_REQUEST, RUN_STATUS, RUN_HITS, RUN_DONE, RUN_TOTAL, RUN_ERRORS, RUN_URL, RUN_DIR
+env: {}                 # values of env{name} in requests, e.g. {token: eyJ...}; else $name
+filters:                # ctrl+r in the results, or preset:"name" in a query; a list of yours replaces this one
+  - name: errors
+    query: resp.code.gte:500
+  - name: denied
+    query: resp.code.eq:401 OR resp.code.eq:403
+  - name: marked
+    query: row.marked.eq:true
+  - name: unmarked
+    query: row.marked.eq:false
+pipes:                  # P in the response; a list of yours replaces this one
+  - name: Headers
+    command: awk '/^\r?$/{exit} 1'
+  - name: Body
+    command: awk 'b; /^\r?$/{b=1}'
+  - name: JWT payloads
+    command: rg -o 'eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]*' | awk '!s[$0]++' | while read -r t; do ops jwt-decode "$t" | jq .payload; done
+
+# Defaults of the request's settings; a request overrides them in its `# steep` block (ctrl+o).
+request:
+  mode: clusterbomb       # clusterbomb (every combination) or pitchfork (side by side)
+  proto: https            # for a target without a scheme
+  concurrency: 40         # parallel requests
+  rateLimit: 0            # requests per second (0: no limit)
+  timeout: 10             # seconds
+  upstream: ""            # proxy, e.g. http://127.0.0.1:8080, socks5://127.0.0.1:9050
+  followRedirects: false
+  recursion: false        # fuzz again under each directory hit (one wordlist, at the end of the path)
+  recursionDepth: 0       # 0: no limit
+  autocalibration: false  # filter responses that look like random ones
+  match:                  # what counts as a hit: values and ranges, comma-separated; empty: off
+    status: all
+    size: ""
+    words: ""
+    lines: ""
+    regex: ""
+  filter:                 # what is discarded; empty: off
+    status: ""
+    size: ""
+    words: ""
+    lines: ""
+    regex: ""
+
+http:
+  headers: []             # imposed on every request, e.g. ["X-Bug-Bounty: me"]
+  userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" # when the request has none; empty: ffuf's
+  userAgentSuffix: ""     # appended to every User-Agent, after a space
+  stripPwnFox: true       # drop X-PwnFox-Color before sending; false for a proxy that reads it
+
+layout:
+  focus: editor           # editor or collection
+  collection: shown       # shown or hidden
+
+view:
+  prettyPrint: true       # format JSON and HTML bodies
+  wrap: true
+
+screenshot:
+  dir: ""                 # relative to the collection; empty: $XDG_PICTURES_DIR/screenshots
+  format: png             # png or svg
+  font: ""                # fontconfig family or font file; empty: monospace
+  fontSize: 12            # points
+  scale: 2                # pixels per point (PNG)
+  onCapture: ""           # sh -c on $SCREENSHOT, e.g. wl-copy < "$SCREENSHOT"
+
+# By command ID: a key, a list, or [] for none (palette only). foam's own: list, viewer, help,
+# palette, confirm, prompt, form. The editor's vim keys are fixed.
+keys:
+  app:
+    quit: [q, ctrl+c]
+    help: "?"
+    palette: ctrl+p
+  focus:
+    collection: alt+1
+    editor: alt+2
+    results: alt+3
+    response: alt+4
+  pane:
+    left: [ctrl+h, alt+h]
+    down: [ctrl+j, alt+j]
+    up: [ctrl+k, alt+k]
+    right: [ctrl+l, alt+l]
+    zoom: alt+z           # the focused pane takes the whole window
+  collection:
+    toggle: ctrl+b
+    copy-path: []         # copies the path of the collection's folder
+  run:
+    start: [s, ctrl+enter, ctrl+n]  # ctrl+enter needs the Kitty keyboard protocol
+    stop: ctrl+x
+    pause: ctrl+f
+  settings:
+    open: ctrl+o
+  screenshot:
+    take: ctrl+s
+  tree:
+    open: enter
+    expand: [l, right]
+    collapse: [h, left]
+    expand-all: L
+    collapse-all: H
+    filter: /
+    clear-filter: ctrl+g
+    new: n
+    new-folder: N
+    duplicate: d
+    rename: r
+    delete: x
+  editor:
+    pick-file: ctrl+t
+    operation: ctrl+e     # wraps the visual selection
+    path: U
+    headers: H
+    body: B
+  results:
+    open: enter
+    filter: /
+    clear-filter: ctrl+g
+    sort: o
+    reverse: O
+    forget: x             # forgets the selected hit
+    forget-all: X         # forgets the hits shown, after the filter
+    forget-collection: [] # forgets every response stored in the collection
+    mark: m               # marks the hit, then moves down
+    filters: ctrl+r       # saved and recent filters
+  response:
+    search: /
+    next: n
+    prev: N
+    pipe: "|"
+    pipes: P
+    clear: ctrl+g         # drops the search and the pipe
+    copy: c
+    editor: o
+    wrap: w
+    format: p
+  export:
+    hit: y                # asks what to copy of the selected hit
+    all: Y                # of every hit shown
+    path: f               # copies the path of the hit's response file
+    dir: F                # of the run's directory
+    edit: e               # saves the hit's request as a new request
+  copy:
+    curl: c
+    http: h
+    response: r
+    body: b
+    headers: e
+    url: u
+    input: i
+    close: [esc, ctrl+c, q]
+    pick: enter
+    up: [up, k, ctrl+p]
+    down: [down, j, ctrl+n]
+  filters:
+    close: [esc, ctrl+c]
+    pick: enter
+    up: [up, ctrl+p, ctrl+k]
+    down: [down, ctrl+n, ctrl+j]
+  pipes:
+    close: [esc, ctrl+c]
+    pick: enter
+    up: [up, ctrl+p, ctrl+k]
+    down: [down, ctrl+n, ctrl+j]
+  operations:
+    close: [esc, ctrl+c]
+    pick: enter
+    up: [up, ctrl+p, ctrl+k]
+    down: [down, ctrl+n, ctrl+j]

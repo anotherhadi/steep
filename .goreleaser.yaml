@@ -1,0 +1,38 @@
+version: 2
+
+builds:
+  - id: steep
+    main: ./cmd/steep
+    binary: steep
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, freebsd]
+    goarch: [amd64, arm64]
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X github.com/sectui/steep/internal/config.Version={{.Version}}
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+archives:
+  - formats: [tar.gz]
+    name_template: "steep_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: SHA256SUMS
+
+changelog:
+  use: github
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
+
+release:
+  draft: false
+  prerelease: auto

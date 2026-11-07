@@ -14,6 +14,10 @@ import (
 
 	flag "github.com/spf13/pflag"
 
+	"github.com/knadh/koanf/parsers/yaml"
+	"github.com/knadh/koanf/providers/file"
+	koanf "github.com/knadh/koanf/v2"
+
 	"github.com/sectui/foam"
 	"github.com/sectui/foam/commands"
 	fconfig "github.com/sectui/foam/config"
@@ -34,19 +38,24 @@ type Config struct {
 	Layout     Layout            `koanf:"layout"`
 	View       View              `koanf:"view"`
 	Screenshot Screenshot        `koanf:"screenshot"`
+
+	// CollectionCommands are the keys of the collection's own config.yaml
+	// that run shell commands or hold secrets; set by Load.
+	CollectionCommands []string `koanf:"-"`
 }
 
 type Steep struct {
-	Collection       string            `koanf:"collection"`
-	CreateCollection bool              `koanf:"createCollection"`
-	ConfirmAbove     int               `koanf:"confirmAbove" validate:"gte=0"`
-	Shortcuts        map[string]string `koanf:"shortcuts"`
-	FilePicker       string            `koanf:"filePicker"`
-	PickerDir        string            `koanf:"pickerDir"`
-	OnRunEnd         string            `koanf:"onRunEnd"`
-	Pipes            []Pipe            `koanf:"pipes"`
-	Env              map[string]string `koanf:"env"`
-	Filters          []Filter          `koanf:"filters"`
+	Collection             string            `koanf:"collection"`
+	CreateCollection       bool              `koanf:"createCollection"`
+	ConfirmAbove           int               `koanf:"confirmAbove" validate:"gte=0"`
+	Shortcuts              map[string]string `koanf:"shortcuts"`
+	FilePicker             string            `koanf:"filePicker"`
+	PickerDir              string            `koanf:"pickerDir"`
+	OnRunEnd               string            `koanf:"onRunEnd"`
+	CollectionConfigNotice bool              `koanf:"collectionConfigNotice"`
+	Pipes                  []Pipe            `koanf:"pipes"`
+	Env                    map[string]string `koanf:"env"`
+	Filters                []Filter          `koanf:"filters"`
 }
 
 // Filter is an HTTPQL query kept under a name: ctrl+r, or preset:"name".
@@ -262,7 +271,25 @@ func Load(args []string) (*Config, error) {
 			cfg.Steep.Pipes[i].Name = strings.Join(strings.Fields(p.Command), " ")
 		}
 	}
+	cfg.CollectionCommands = collectionConfigCommands(filepath.Join(cfg.Steep.Collection, "config.yaml"))
 	return cfg, nil
+}
+
+// collectionConfigCommands lists the keys of a collection's config.yaml
+// that run something or hold secrets: shell commands through filePicker,
+// onRunEnd, pipes and screenshot.onCapture, and env values.
+func collectionConfigCommands(path string) []string {
+	k := koanf.New(".")
+	if err := k.Load(file.Provider(path), yaml.Parser()); err != nil {
+		return nil
+	}
+	var found []string
+	for _, key := range []string{"filePicker", "onRunEnd", "pipes", "env", "screenshot.onCapture"} {
+		if k.Exists(key) {
+			found = append(found, key)
+		}
+	}
+	return found
 }
 
 // CollectionDir resolves the collection setting: "" is $XDG_DATA_HOME/steep.

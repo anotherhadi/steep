@@ -6,10 +6,12 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net"
 	"os"
 	"path/filepath"
 	"strconv"
+	"syscall"
 )
 
 // Order is what a line asks.
@@ -45,8 +47,8 @@ type Listener struct {
 
 // Listen opens this steep's socket for the collection at root.
 func Listen(root string) (*Listener, error) {
-	dir := Dir()
-	if err := os.MkdirAll(dir, 0o700); err != nil {
+	dir, err := secureDir()
+	if err != nil {
 		return nil, err
 	}
 	path := filepath.Join(dir, Key(root)+"."+strconv.Itoa(os.Getpid())+".sock")
@@ -58,6 +60,34 @@ func Listen(root string) (*Listener, error) {
 	l := &Listener{ln: ln, path: path, orders: make(chan Order, 16)}
 	go l.serve()
 	return l, nil
+}
+
+// secureDir is Dir() made safe for sockets: ours, private, not a symlink.
+// In /tmp (Dir's fallback outside of a session) another user can
+// pre-create the directory, or leave one that is not private, and then
+// reach the sockets or answer for them.
+func secureDir() (string, error) {
+	dir := Dir()
+	if err := os.MkdirAll(dir, 0o700); err != nil {
+		return "", err
+	}
+	fi, err := os.Lstat(dir)
+	if err != nil {
+		return "", err
+	}
+	if fi.Mode()&os.ModeSymlink != 0 {
+		return "", fmt.Errorf("%s is a symlink", dir)
+	}
+	st, ok := fi.Sys().(*syscall.Stat_t)
+	if !ok || st.Uid != uint32(os.Getuid()) {
+		return "", fmt.Errorf("%s is not owned by you", dir)
+	}
+	if fi.Mode().Perm() != 0o700 {
+		if err := os.Chmod(dir, 0o700); err != nil {
+			return "", err
+		}
+	}
+	return dir, nil
 }
 
 func (l *Listener) serve() {
@@ -101,6 +131,9 @@ func (l *Listener) Close() error {
 // Send gives o to every steep open on the collection at root, and tells how
 // many got it. Sockets nobody listens on any more are removed.
 func Send(root string, o Order) (int, error) {
+	if _, err := secureDir(); err != nil {
+		return 0, err
+	}
 	b, err := json.Marshal(o)
 	if err != nil {
 		return 0, err
@@ -110,7 +143,12 @@ func Send(root string, o Order) (int, error) {
 	for _, p := range paths {
 		c, err := net.Dial("unix", p)
 		if err != nil {
-			_ = os.Remove(p)
+			// only a real socket is taken away: not a plain file, and not
+			// through a link
+			if fi, lerr := os.Lstat(p); lerr == nil &&
+				fi.Mode()&os.ModeSymlink == 0 && fi.Mode()&os.ModeSocket != 0 {
+				_ = os.Remove(p)
+			}
 			continue
 		}
 		if _, err := c.Write(append(b, '\n')); err == nil {

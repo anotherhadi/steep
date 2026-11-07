@@ -90,3 +90,17 @@ func TestScreenshot(t *testing.T) {
 		t.Fatalf("notes = %s", h)
 	}
 }
+
+func TestWriteNewPrivate(t *testing.T) {
+	p, err := writeNew(t.TempDir(), "s.png", []byte("x"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	fi, err := os.Stat(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if fi.Mode().Perm() != 0o600 {
+		t.Fatalf("perm = %v", fi.Mode().Perm())
+	}
+}

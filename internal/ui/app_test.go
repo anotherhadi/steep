@@ -425,3 +425,46 @@ func TestFocusOrder(t *testing.T) {
 		t.Fatalf("tree on %q", e.Name)
 	}
 }
+
+func TestCollectionConfigNotice(t *testing.T) {
+	m := newModel(t)
+	m.watch = nil // Init would wait on it, and on the socket
+	m.remote.Close()
+	m.remote = nil
+	m.cfg.CollectionCommands = []string{"pipes", "onRunEnd"}
+	startUp(m)
+	if !strings.Contains(screen(m), "config.yaml") {
+		t.Fatalf("no notice:\n%s", screen(m))
+	}
+
+	quiet := newModel(t)
+	quiet.watch = nil
+	quiet.remote.Close()
+	quiet.remote = nil
+	quiet.cfg.CollectionCommands = []string{"pipes"}
+	quiet.cfg.Steep.CollectionConfigNotice = false
+	startUp(quiet)
+	if strings.Contains(screen(quiet), "config.yaml") {
+		t.Fatalf("notice despite collectionConfigNotice: false:\n%s", screen(quiet))
+	}
+}
+
+// startUp runs what Init asks, except the timers that would block the test.
+func startUp(m *Model) {
+	cmd := m.Init()
+	if cmd == nil {
+		return
+	}
+	msg := cmd()
+	if batch, ok := msg.(tea.BatchMsg); ok {
+		for _, c := range batch {
+			if msg := c(); msg != nil {
+				m.Update(msg) // its expire timers are not run: toasts stay
+			}
+		}
+		return
+	}
+	if msg != nil {
+		m.Update(msg)
+	}
+}

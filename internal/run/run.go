@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"slices"
@@ -118,21 +117,18 @@ func Load(dir string) (Meta, []Hit, error) {
 	}
 	defer f.Close()
 	var hits []Hit
-	r := bufio.NewReader(f)
-	for {
-		// no limit on a line: a hit's inputs are as long as their wordlists'
-		line, err := r.ReadBytes('\n')
+	// A hit's inputs are as long as their wordlists' lines, so lines are
+	// big; a ceiling still keeps a corrupted hits.jsonl from exhausting
+	// memory.
+	sc := bufio.NewScanner(f)
+	sc.Buffer(make([]byte, 1<<20), 64<<20)
+	for sc.Scan() {
 		var h Hit
-		if len(line) > 0 && json.Unmarshal(line, &h) == nil {
+		if json.Unmarshal(sc.Bytes(), &h) == nil {
 			hits = append(hits, h)
 		} // else a line cut short by a crash
-		if errors.Is(err, io.EOF) {
-			return m, hits, nil
-		}
-		if err != nil {
-			return m, hits, err
-		}
 	}
+	return m, hits, sc.Err()
 }
 
 func ReadRequest(dir string, n int) ([]byte, error) {

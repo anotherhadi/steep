@@ -1,7 +1,10 @@
 package config
 
 import (
+	"os"
+	"path/filepath"
 	"reflect"
+	"slices"
 	"strings"
 	"testing"
 )
@@ -61,5 +64,26 @@ func TestStripPwnFox(t *testing.T) {
 	t.Setenv("STEEP_HTTP__STRIP_PWN_FOX", "false")
 	if c, err = Load([]string{"--collection", t.TempDir()}); err != nil || c.HTTP.StripPwnFox {
 		t.Fatalf("env: %v, %v", err, c.HTTP.StripPwnFox)
+	}
+}
+
+func TestCollectionConfigCommands(t *testing.T) {
+	dir := t.TempDir()
+	if got := collectionConfigCommands(filepath.Join(dir, "config.yaml")); got != nil {
+		t.Fatalf("missing file: %v", got)
+	}
+	p := filepath.Join(dir, "config.yaml")
+	os.WriteFile(p, []byte("request:\n  timeout: 30\n"), 0o600)
+	if got := collectionConfigCommands(p); got != nil {
+		t.Fatalf("harmless config: %v", got)
+	}
+	os.WriteFile(p, []byte("onRunEnd: notify-send done\npipes:\n  - name: j\n    command: jq .\nenv:\n  token: t\n"), 0o600)
+	want := []string{"onRunEnd", "pipes", "env"}
+	if got := collectionConfigCommands(p); !slices.Equal(got, want) {
+		t.Fatalf("got %v, want %v", got, want)
+	}
+	os.WriteFile(p, []byte("screenshot:\n  onCapture: wl-copy < $SCREENSHOT\n"), 0o600)
+	if got := collectionConfigCommands(p); !slices.Equal(got, []string{"screenshot.onCapture"}) {
+		t.Fatalf("nested: %v", got)
 	}
 }

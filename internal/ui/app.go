@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 
 	tea "charm.land/bubbletea/v2"
@@ -185,7 +186,13 @@ func (m *Model) Init() tea.Cmd {
 	if m.pendingImport != "" {
 		ask = m.askNew(m.tree.Dir(), false, m.pendingImport)
 	}
-	return tea.Batch(m.waitChange(), m.waitOrder(), ask)
+	cmds := []tea.Cmd{m.waitChange(), m.waitOrder(), ask}
+	if m.cfg.Steep.CollectionConfigNotice && len(m.cfg.CollectionCommands) > 0 {
+		cmds = append(cmds, notify.Warning("The collection's config.yaml sets "+
+			strings.Join(m.cfg.CollectionCommands, ", ")+
+			": steep runs these; collectionConfigNotice: false silences this"))
+	}
+	return tea.Batch(cmds...)
 }
 
 // Import asks, at start, for a name to save the request text under.

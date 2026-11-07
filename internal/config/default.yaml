@@ -15,6 +15,7 @@ shortcuts: {}           # wordlist dirs, e.g. {w: ~/wordlists} for file{$w/commo
 pickerDir: ""           # where ctrl+t starts in an empty file{}; empty: cwd
 filePicker: fzf         # sh -c; prints the pick, or writes it to {file} (yazi --chooser-file={file})
 onRunEnd: ""            # sh -c at the end of a run; gets RUN_REQUEST, RUN_STATUS, RUN_HITS, RUN_DONE, RUN_TOTAL, RUN_ERRORS, RUN_URL, RUN_DIR
+collectionConfigNotice: true  # warn at startup when the collection's config.yaml sets shell commands or secrets (filePicker, onRunEnd, pipes, screenshot.onCapture, env)
 env: {}                 # values of env{name} in requests, e.g. {token: eyJ...}; else $name
 filters:                # ctrl+r in the results, or preset:"name" in a query; a list of yours replaces this one
   - name: errors

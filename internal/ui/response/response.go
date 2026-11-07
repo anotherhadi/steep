@@ -145,6 +145,9 @@ func (m *Model) render() {
 	}
 	if m.pipe != "" && (m.piped != nil || m.pipeErr != "") {
 		lines := strings.Split(strings.TrimRight(string(m.piped), "\n"), "\n")
+		for i, l := range lines {
+			lines[i] = viewer.Sanitize(l)
+		}
 		m.view.SetContent(lines, nil)
 		m.search()
 		return

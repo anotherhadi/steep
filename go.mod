@@ -10,6 +10,9 @@ require (
 	github.com/charmbracelet/x/ansi v0.11.9
 	github.com/ffuf/ffuf/v2 v2.3.0
 	github.com/fsnotify/fsnotify v1.10.1
+	github.com/knadh/koanf/parsers/yaml v1.1.1
+	github.com/knadh/koanf/providers/file v1.2.1
+	github.com/knadh/koanf/v2 v2.4.1
 	github.com/sectui/foam v0.0.4
 	github.com/sectui/httpql v0.0.1
 	github.com/sectui/operations v0.0.1
@@ -34,12 +37,9 @@ require (
 	github.com/go-playground/validator/v10 v10.30.6 // indirect
 	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
 	github.com/knadh/koanf/maps v0.1.2 // indirect
-	github.com/knadh/koanf/parsers/yaml v1.1.1 // indirect
 	github.com/knadh/koanf/providers/env/v2 v2.0.2 // indirect
-	github.com/knadh/koanf/providers/file v1.2.1 // indirect
 	github.com/knadh/koanf/providers/posflag v1.0.2 // indirect
 	github.com/knadh/koanf/providers/rawbytes v1.0.1 // indirect
-	github.com/knadh/koanf/v2 v2.4.1 // indirect
 	github.com/leodido/go-urn v1.5.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.4.1 // indirect
 	github.com/mattn/go-runewidth v0.0.30 // indirect

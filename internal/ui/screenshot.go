@@ -146,7 +146,7 @@ func writeNew(dir, name string, data []byte) (string, error) {
 		if i > 1 {
 			path = filepath.Join(dir, fmt.Sprintf("%s-%d%s", base, i, ext))
 		}
-		f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o644)
+		f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o600)
 		if errors.Is(err, fs.ErrExist) && i < 100 {
 			continue
 		}

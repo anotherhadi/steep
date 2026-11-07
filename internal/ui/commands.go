@@ -54,7 +54,9 @@ func (m *Model) global() []commands.Command {
 			} else {
 				m.showCollection, m.peek = !m.showCollection, false
 			}
-			if !m.collectionShown() && m.focus == paneCollection {
+			if m.collectionShown() {
+				m.focus = paneCollection
+			} else if m.focus == paneCollection {
 				m.focus = paneEditor
 			}
 			m.layout()

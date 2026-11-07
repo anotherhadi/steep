@@ -468,3 +468,23 @@ func startUp(m *Model) {
 		m.Update(msg)
 	}
 }
+
+// Showing the collection with ctrl+b focuses it; hiding it gives the focus back.
+func TestToggleCollectionFocus(t *testing.T) {
+	for _, w := range []int{140, 90} { // wide, then too narrow (peek)
+		m := newModel(t)
+		m.Update(tea.WindowSizeMsg{Width: w, Height: 40})
+		if m.collectionShown() {
+			key(m, 'b', tea.ModCtrl) // hide it first
+		}
+		m.setFocus(paneEditor)
+		key(m, 'b', tea.ModCtrl)
+		if !m.collectionShown() || m.focus != paneCollection {
+			t.Fatalf("width %d, shown: shown %v, focus %v", w, m.collectionShown(), m.focus)
+		}
+		key(m, 'b', tea.ModCtrl)
+		if m.collectionShown() || m.focus == paneCollection {
+			t.Fatalf("width %d, hidden: shown %v, focus %v", w, m.collectionShown(), m.focus)
+		}
+	}
+}

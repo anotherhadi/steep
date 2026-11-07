@@ -5,6 +5,7 @@ package ui
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"time"
 
 	tea "charm.land/bubbletea/v2"
@@ -163,10 +164,20 @@ func (m *Model) waitOrder() tea.Cmd {
 }
 
 // focusOrder opens the request another tool asks for: spilltea, which just
-// wrote it.
+// wrote it. Inside tmux, steep's pane comes to the front too.
 func (m *Model) focusOrder(name string) tea.Cmd {
 	m.reloadEntries()
-	return m.open(name)
+	return tea.Batch(m.open(name), raisePane)
+}
+
+// raisePane selects steep's tmux pane, and its window.
+func raisePane() tea.Msg {
+	pane := os.Getenv("TMUX_PANE")
+	if pane == "" || os.Getenv("TMUX") == "" {
+		return nil
+	}
+	_ = exec.Command("tmux", "select-window", "-t", pane, ";", "select-pane", "-t", pane).Run()
+	return nil
 }
 
 func (m *Model) Init() tea.Cmd {

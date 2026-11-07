@@ -17,6 +17,7 @@ import (
 	"github.com/sectui/steep/internal/collection"
 	"github.com/sectui/steep/internal/config"
 	"github.com/sectui/steep/internal/fuzz"
+	"github.com/sectui/steep/internal/remote"
 	"github.com/sectui/steep/internal/request"
 	"github.com/sectui/steep/internal/ui/editor"
 	"github.com/sectui/steep/internal/ui/response"
@@ -68,6 +69,7 @@ type Model struct {
 
 	watch     <-chan struct{}
 	stopWatch func()
+	remote    *remote.Listener // orders of other tools: spilltea's focus
 
 	pendingImport string // a request to name and save at start
 
@@ -123,6 +125,9 @@ func New(cfg *config.Config) (*Model, error) {
 	if ch, stop, err := col.Watch(150 * time.Millisecond); err == nil {
 		m.watch, m.stopWatch = ch, stop
 	}
+	if l, err := remote.Listen(col.Root); err == nil {
+		m.remote = l
+	}
 	return m, nil
 }
 
@@ -141,21 +146,48 @@ func (m *Model) waitChange() tea.Cmd {
 	}
 }
 
+type orderMsg struct{ remote.Order }
+
+func (m *Model) waitOrder() tea.Cmd {
+	if m.remote == nil {
+		return nil
+	}
+	ch := m.remote.Orders()
+	return func() tea.Msg {
+		o, ok := <-ch
+		if !ok {
+			return nil
+		}
+		return orderMsg{o}
+	}
+}
+
+// focusOrder opens the request another tool asks for: spilltea, which just
+// wrote it.
+func (m *Model) focusOrder(name string) tea.Cmd {
+	m.reloadEntries()
+	return m.open(name)
+}
+
 func (m *Model) Init() tea.Cmd {
 	var ask tea.Cmd
 	if m.pendingImport != "" {
 		ask = m.askNew(m.tree.Dir(), false, m.pendingImport)
 	}
-	return tea.Batch(m.waitChange(), ask)
+	return tea.Batch(m.waitChange(), m.waitOrder(), ask)
 }
 
 // Import asks, at start, for a name to save the request text under.
 func (m *Model) Import(text string) { m.pendingImport = text }
 
-// Close releases what the model holds: the watcher, a run in flight.
+// Close releases what the model holds: the watcher, the socket, a run in
+// flight.
 func (m *Model) Close() {
 	if m.stopWatch != nil {
 		m.stopWatch()
+	}
+	if m.remote != nil {
+		m.remote.Close()
 	}
 	if m.fz != nil {
 		m.fz.Stop()
@@ -189,6 +221,8 @@ func (m *Model) update(msg tea.Msg) tea.Cmd {
 		return m.mouse(msg)
 	case changedMsg:
 		return tea.Batch(m.diskChanged(), m.waitChange())
+	case orderMsg:
+		return tea.Batch(m.focusOrder(msg.Focus), m.waitOrder())
 	case tickMsg:
 		return m.tick()
 	case countMsg:

@@ -19,16 +19,16 @@ import (
 
 	"github.com/sectui/foam/commands"
 	"github.com/sectui/foam/draw"
+	"github.com/sectui/foam/highlight"
 	"github.com/sectui/foam/input"
 	"github.com/sectui/foam/list"
 	"github.com/sectui/foam/notify"
 	"github.com/sectui/foam/overlay"
 	"github.com/sectui/foam/theme"
+	"github.com/sectui/httpql"
 
 	"github.com/sectui/steep/internal/config"
 	"github.com/sectui/steep/internal/fuzz"
-	"github.com/sectui/steep/internal/highlight"
-	"github.com/sectui/steep/internal/httpql"
 	"github.com/sectui/steep/internal/run"
 	"github.com/sectui/steep/internal/ui/picker"
 )
@@ -71,7 +71,7 @@ type Model struct {
 
 	filter    input.Model
 	filtering bool
-	query     *httpql.Query
+	query     *httpql.Query[*record]
 	qerr      string
 	matches   map[int]bool // by hit N; nil when every hit passes
 	pending   bool         // a raw filter is being computed
@@ -228,18 +228,40 @@ func (m *Model) reorder(n int, keep bool) {
 	}
 }
 
-func Record(dir string, h run.Hit) httpql.Record {
-	r := httpql.Record{
-		ID: h.N, Method: h.Method, Code: h.Status, Len: h.Length,
-		Roundtrip: h.Duration.Milliseconds(), Words: h.Words, Lines: h.Lines,
-		ReqRaw: func() string {
-			b, _ := run.ReadRequest(dir, h.N)
-			return string(b)
+// record is what a filter reads of a hit: Caido's fields, and the run's own.
+type record struct {
+	httpql.Record
+	Inputs       []string
+	Words, Lines int64
+}
+
+var schema = func() *httpql.Schema[*record] {
+	fs := httpql.Fields(func(r *record) *httpql.Record { return &r.Record })
+	delete(fs, "req.created_at")
+	fs["fuzz.input"] = httpql.Texts(func(r *record) []string { return r.Inputs })
+	fs["fuzz.words"] = httpql.Int(func(r *record) int64 { return r.Words })
+	fs["fuzz.lines"] = httpql.Int(func(r *record) int64 { return r.Lines })
+	return &httpql.Schema[*record]{Fields: fs, Refused: map[string]string{
+		"req.created_at": "hits have no creation date of their own",
+		"source":         "every hit comes from the same run",
+	}}
+}()
+
+func newRecord(dir string, h run.Hit) *record {
+	r := &record{
+		Record: httpql.Record{
+			ID: h.N, Method: h.Method, Code: h.Status, Len: h.Length,
+			Roundtrip: h.Duration.Milliseconds(),
+			ReqRaw: func() string {
+				b, _ := run.ReadRequest(dir, h.N)
+				return string(b)
+			},
+			RespRaw: func() string {
+				b, _ := run.ReadResponse(dir, h.N)
+				return string(b)
+			},
 		},
-		RespRaw: func() string {
-			b, _ := run.ReadResponse(dir, h.N)
-			return string(b)
-		},
+		Words: h.Words, Lines: h.Lines,
 	}
 	for _, v := range h.Input {
 		r.Inputs = append(r.Inputs, v)
@@ -257,8 +279,8 @@ func Record(dir string, h run.Hit) httpql.Record {
 	return r
 }
 
-func (m *Model) record(h run.Hit) httpql.Record {
-	r := Record(m.dir, h)
+func (m *Model) record(h run.Hit) *record {
+	r := newRecord(m.dir, h)
 	r.Marked = m.marked[h.N]
 	return r
 }
@@ -273,7 +295,7 @@ func (m *Model) refilter() tea.Cmd {
 		m.stale.Store(true) // its result would be dropped anyway
 		m.stale = nil
 	}
-	q, err := httpql.ParsePresets(m.filter.Value(), m.presets)
+	q, err := schema.ParsePresets(m.filter.Value(), m.presets)
 	switch {
 	case err != nil:
 		m.qerr = err.Error()
@@ -293,7 +315,7 @@ func (m *Model) refilter() tea.Cmd {
 				if stale.Load() {
 					return nil
 				}
-				r := Record(dir, h)
+				r := newRecord(dir, h)
 				r.Marked = marked[h.N]
 				if q.Match(r) {
 					matches[h.N] = true

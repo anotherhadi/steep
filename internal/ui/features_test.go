@@ -9,7 +9,8 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/steep/internal/highlight"
+	"github.com/sectui/foam/highlight"
+
 	"github.com/sectui/steep/internal/request"
 	"github.com/sectui/steep/internal/run"
 	"github.com/sectui/steep/internal/ui/picker"

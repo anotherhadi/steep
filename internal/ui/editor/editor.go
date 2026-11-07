@@ -10,12 +10,12 @@ import (
 	"github.com/sectui/foam/commands"
 	"github.com/sectui/foam/draw"
 	feditor "github.com/sectui/foam/editor"
+	"github.com/sectui/foam/highlight"
 	"github.com/sectui/foam/overlay"
 	"github.com/sectui/foam/vim"
 	"github.com/sectui/operations"
 	"github.com/sectui/operations/template"
 
-	"github.com/sectui/steep/internal/highlight"
 	"github.com/sectui/steep/internal/request"
 	"github.com/sectui/steep/internal/ui/oppicker"
 )
@@ -37,7 +37,7 @@ func (m *Model) Open(name, text string) {
 	m.name = name
 	m.ed = feditor.New(text)
 	var cache highlight.Cache
-	m.ed.Style = func(lines []string) []string { return cache.Message(lines, highlight.Options{Blocks: true}) }
+	m.ed.Style = func(lines []string) []string { return cache.Message(lines, Highlight) }
 	m.ed.SetSize(m.w, m.h)
 }
 

@@ -21,6 +21,7 @@ import (
 	"github.com/sectui/foam/theme"
 
 	"github.com/sectui/steep/internal/config"
+	"github.com/sectui/steep/internal/remote"
 )
 
 func init() { log.SetOutput(io.Discard) }
@@ -28,6 +29,7 @@ func init() { log.SetOutput(io.Discard) }
 func newModel(t *testing.T) *Model {
 	t.Helper()
 	t.Setenv("XDG_STATE_HOME", t.TempDir())
+	t.Setenv("XDG_RUNTIME_DIR", t.TempDir())
 	cfg, err := fconfig.LoadBytes[config.Config](foam.Defaults, config.Defaults)
 	if err != nil {
 		t.Fatal(err)
@@ -232,7 +234,9 @@ func TestHelpAndSettings(t *testing.T) {
 func TestImportAtStart(t *testing.T) {
 	m := newModel(t)
 	m.Import("GET /x HTTP/1.1\nHost: a.test\n\n")
-	m.watch = nil // Init would wait on it
+	m.watch = nil // Init would wait on it, and on the socket
+	m.remote.Close()
+	m.remote = nil
 	drain(m, m.Init(), 0)
 	if m.overlays.Top() == nil {
 		t.Fatal("no prompt for the name")
@@ -397,5 +401,27 @@ func TestImportedLowercaseMethod(t *testing.T) {
 	}
 	if _, ok := imported("get some words"); ok {
 		t.Error("words imported as a request")
+	}
+}
+
+func TestFocusOrder(t *testing.T) {
+	m := newModel(t)
+	if err := m.col.Write("spilltea/api.test/login", "POST /login HTTP/1.1\nHost: api.test\n\n"); err != nil {
+		t.Fatal(err)
+	}
+	if n, err := remote.Send(m.col.Root, remote.Order{Focus: "spilltea/api.test/login"}); err != nil || n != 1 {
+		t.Fatalf("Send = %d, %v", n, err)
+	}
+	select {
+	case o := <-m.remote.Orders():
+		drain(m, m.focusOrder(o.Focus), 0)
+	case <-time.After(2 * time.Second):
+		t.Fatal("no order")
+	}
+	if m.editor.Name() != "spilltea/api.test/login" || m.focus != paneEditor {
+		t.Fatalf("open %q, focus %v", m.editor.Name(), m.focus)
+	}
+	if e, _ := m.tree.Selected(); e.Name != "spilltea/api.test/login" {
+		t.Fatalf("tree on %q", e.Name)
 	}
 }

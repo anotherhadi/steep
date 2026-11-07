@@ -10,11 +10,12 @@ import (
 
 	"github.com/sectui/foam/draw"
 	"github.com/sectui/foam/geom"
+	"github.com/sectui/foam/highlight"
 	"github.com/sectui/foam/minsize"
 	"github.com/sectui/foam/theme"
 
-	"github.com/sectui/steep/internal/highlight"
 	"github.com/sectui/steep/internal/request"
+	"github.com/sectui/steep/internal/ui/editor"
 )
 
 // The collection is 32 cells wide, 24 below 140 columns, and hidden below
@@ -248,7 +249,7 @@ func (m *Model) bar(left, right string) string {
 	url := ""
 	if method, u := m.url(); room > 8 && u != "" {
 		url = highlight.MethodColor(method).Style().Bold(true).Render(draw.Clean(method)) + " " +
-			highlight.URL(draw.Clean(u))
+			highlight.URL(draw.Clean(u), editor.BlockSpans)
 		url = ansi.Truncate(url, room, "…")
 	}
 	pad := max(room+2-ansi.StringWidth(url), 0)

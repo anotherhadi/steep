@@ -81,7 +81,7 @@ screenshot:
   onCapture: ""           # sh -c on $SCREENSHOT, e.g. wl-copy < "$SCREENSHOT"
 
 # By command ID: a key, a list, or [] for none (palette only). foam's own: list, viewer, help,
-# palette, confirm, prompt, form. The editor's vim keys are fixed.
+# palette, confirm, prompt, form, tree. The editor's vim keys are fixed.
 keys:
   app:
     quit: [q, ctrl+c]
@@ -109,14 +109,7 @@ keys:
     open: ctrl+o
   screenshot:
     take: ctrl+s
-  tree:
-    open: enter
-    expand: [l, right]
-    collapse: [h, left]
-    expand-all: L
-    collapse-all: H
-    filter: /
-    clear-filter: ctrl+g
+  tree:                   # foam's: open, expand, collapse, expand-all, collapse-all, filter, clear-filter
     new: n
     new-folder: N
     duplicate: d

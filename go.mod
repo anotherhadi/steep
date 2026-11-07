@@ -10,7 +10,8 @@ require (
 	github.com/charmbracelet/x/ansi v0.11.9
 	github.com/ffuf/ffuf/v2 v2.3.0
 	github.com/fsnotify/fsnotify v1.10.1
-	github.com/sectui/foam v0.0.2
+	github.com/sectui/foam v0.0.4
+	github.com/sectui/httpql v0.0.1
 	github.com/sectui/operations v0.0.1
 	github.com/spf13/pflag v1.0.10
 	golang.org/x/net v0.60.0

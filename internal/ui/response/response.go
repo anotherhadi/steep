@@ -18,6 +18,7 @@ import (
 
 	"github.com/sectui/foam/commands"
 	"github.com/sectui/foam/draw"
+	"github.com/sectui/foam/highlight"
 	"github.com/sectui/foam/input"
 	"github.com/sectui/foam/notify"
 	"github.com/sectui/foam/overlay"
@@ -26,7 +27,6 @@ import (
 
 	"github.com/sectui/steep/internal/config"
 	"github.com/sectui/steep/internal/format"
-	"github.com/sectui/steep/internal/highlight"
 	"github.com/sectui/steep/internal/ui/picker"
 )
 

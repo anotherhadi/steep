@@ -101,3 +101,21 @@ func TestSecureDir(t *testing.T) {
 		t.Fatal("a symlinked dir was accepted")
 	}
 }
+
+func TestRootFile(t *testing.T) {
+	t.Setenv("XDG_RUNTIME_DIR", t.TempDir())
+	root := t.TempDir()
+	l, err := Listen(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	file := rootFile(l.path)
+	b, err := os.ReadFile(file)
+	if err != nil || string(b) != resolve(root) {
+		t.Fatalf("root file %q, %v", b, err)
+	}
+	l.Close()
+	if _, err := os.Stat(file); !os.IsNotExist(err) {
+		t.Fatal("root file left after Close")
+	}
+}

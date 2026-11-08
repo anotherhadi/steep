@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"syscall"
 )
 
@@ -29,14 +30,18 @@ func Dir() string {
 
 // Key names the sockets of the collection at root.
 func Key(root string) string {
+	sum := sha256.Sum256([]byte(resolve(root)))
+	return hex.EncodeToString(sum[:8])
+}
+
+func resolve(root string) string {
 	if abs, err := filepath.Abs(root); err == nil {
 		root = abs
 	}
 	if real, err := filepath.EvalSymlinks(root); err == nil {
 		root = real
 	}
-	sum := sha256.Sum256([]byte(filepath.Clean(root)))
-	return hex.EncodeToString(sum[:8])
+	return filepath.Clean(root)
 }
 
 type Listener struct {
@@ -55,6 +60,12 @@ func Listen(root string) (*Listener, error) {
 	_ = os.Remove(path) // left by a steep that had this pid
 	ln, err := net.Listen("unix", path)
 	if err != nil {
+		return nil, err
+	}
+	// the key is a hash: the .root file next to the socket lets other tools
+	// (spilltea) find which collections are open
+	if err := os.WriteFile(rootFile(path), []byte(resolve(root)), 0o600); err != nil {
+		ln.Close()
 		return nil, err
 	}
 	l := &Listener{ln: ln, path: path, orders: make(chan Order, 16)}
@@ -125,8 +136,11 @@ func (l *Listener) Orders() <-chan Order { return l.orders }
 func (l *Listener) Close() error {
 	err := l.ln.Close()
 	_ = os.Remove(l.path)
+	_ = os.Remove(rootFile(l.path))
 	return err
 }
+
+func rootFile(sock string) string { return strings.TrimSuffix(sock, ".sock") + ".root" }
 
 // Send gives o to every steep open on the collection at root, and tells how
 // many got it. Sockets nobody listens on any more are removed.

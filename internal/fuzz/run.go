@@ -267,6 +267,11 @@ func (r *Run) Dir() string { return r.store.Dir }
 func (r *Run) URL() string { return r.url }
 
 func (r *Run) message(s string) {
+	if strings.TrimSpace(s) == "" {
+		// ffuf warns with its stored error even when there is none, e.g. once
+		// Stop() ends the job without having called setError
+		return
+	}
 	r.mu.Lock()
 	r.pending.Messages = append(r.pending.Messages, s)
 	r.mu.Unlock()

@@ -96,6 +96,18 @@ func TestHTTP(t *testing.T) {
 	}
 }
 
+func TestParseHTTPTrailingBlankLine(t *testing.T) {
+	// a single trailing newline, with no body, must not read as a blank
+	// header: it is sent without that last line, not rejected
+	h, err := ParseHTTP("GET / HTTP/1.1\nHost: api.test\n")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if h.Method != "GET" || h.Header("host") != "api.test" || h.Body != "" {
+		t.Fatalf("got %+v", h)
+	}
+}
+
 func TestPeek(t *testing.T) {
 	for in, want := range map[string]string{
 		"GET /a HTTP/1.1\nX-Being-Typed\nHost: h\n\nbody": "GET /a h",

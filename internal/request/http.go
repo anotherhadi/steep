@@ -35,6 +35,9 @@ func ParseHTTP(text string) (HTTP, error) {
 		h.Version = parts[2]
 	}
 	for _, l := range lines[1:] {
+		if strings.TrimSpace(l) == "" {
+			break
+		}
 		name, value, ok := strings.Cut(l, ":")
 		if !ok || strings.TrimSpace(name) == "" {
 			return HTTP{}, fmt.Errorf("header %q has no name", l)

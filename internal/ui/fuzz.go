@@ -209,23 +209,27 @@ func (m *Model) tick() tea.Cmd {
 	fz := m.fz
 	m.fz = nil
 	cmds = append(cmds, m.runEnd(fz, u))
-	if e := u.Unbuilt; e > 0 {
-		// the request's blocks, not the network: worth telling apart
-		text := fmt.Sprintf("%d of %d requests could not be built", e, u.Progress.Done)
-		if u.Progress.Done <= 1 {
-			text = "the request could not be built"
+	if !u.Stopped {
+		// stopping cancels the requests in flight: their failures are not
+		// the target's, and not worth a warning
+		if e := u.Unbuilt; e > 0 {
+			// the request's blocks, not the network: worth telling apart
+			text := fmt.Sprintf("%d of %d requests could not be built", e, u.Progress.Done)
+			if u.Progress.Done <= 1 {
+				text = "the request could not be built"
+			}
+			cmds = append(cmds, notify.Warning(text+": "+u.FirstUnbuilt))
 		}
-		cmds = append(cmds, notify.Warning(text+": "+u.FirstUnbuilt))
-	}
-	if e := u.Progress.Errors - u.Unbuilt; e > 0 {
-		text := fmt.Sprintf("%d of %d requests failed", e, u.Progress.Done)
-		if u.Progress.Done <= 1 {
-			text = "the request failed"
+		if e := u.Progress.Errors - u.Unbuilt; e > 0 {
+			text := fmt.Sprintf("%d of %d requests failed", e, u.Progress.Done)
+			if u.Progress.Done <= 1 {
+				text = "the request failed"
+			}
+			if u.FirstError != "" {
+				text += ": " + u.FirstError
+			}
+			cmds = append(cmds, notify.Warning(text))
 		}
-		if u.FirstError != "" {
-			text += ": " + u.FirstError
-		}
-		cmds = append(cmds, notify.Warning(text))
 	}
 	return tea.Batch(cmds...)
 }

@@ -145,7 +145,25 @@ func TestPitchforkAndStop(t *testing.T) {
 	}
 	time.Sleep(100 * time.Millisecond)
 	r.Stop()
-	wait(t, r)
+	var messages []string
+	deadline := time.Now().Add(10 * time.Second)
+	finished := false
+	for time.Now().Before(deadline) && !finished {
+		u := r.Drain()
+		messages = append(messages, u.Messages...)
+		finished = u.Finished
+		time.Sleep(20 * time.Millisecond)
+	}
+	if !finished {
+		t.Fatal("run did not finish")
+	}
+	// cutting a run cancels the requests in flight; that must not surface as
+	// a blank message, nor as a "requests failed" one
+	for _, msg := range messages {
+		if strings.TrimSpace(msg) == "" {
+			t.Errorf("blank message among %q", messages)
+		}
+	}
 	if m, _, _ := run.Load(store.Dir); !m.Stopped {
 		t.Fatalf("meta = %+v", m)
 	}

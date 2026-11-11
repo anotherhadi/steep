@@ -554,8 +554,9 @@ func (m *Model) header() int {
 	return n
 }
 
-// Mouse selects on click (a second click opens), scrolls on the wheel.
-func (m *Model) Mouse(ev tea.MouseMsg) tea.Cmd {
+// Mouse selects on click (a second click, while already focused, opens),
+// scrolls on the wheel.
+func (m *Model) Mouse(ev tea.MouseMsg, focused bool) tea.Cmd {
 	mm := ev.Mouse()
 	if _, click := ev.(tea.MouseClickMsg); click && mm.Y < m.header()-1 {
 		// the filter line, its note or the rule under them
@@ -565,8 +566,7 @@ func (m *Model) Mouse(ev tea.MouseMsg) tea.Cmd {
 	mm.Y -= m.header()
 	switch ev.(type) {
 	case tea.MouseClickMsg:
-		before := m.list.Selected()
-		if i := m.list.Mouse(tea.MouseClickMsg(mm)); i >= 0 && i == before {
+		if _, activate := m.list.Reselect(tea.MouseClickMsg(mm), focused); activate {
 			return send(OpenMsg{})
 		}
 	case tea.MouseWheelMsg:

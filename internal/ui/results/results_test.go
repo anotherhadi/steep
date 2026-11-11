@@ -3,6 +3,8 @@ package results
 import (
 	"testing"
 
+	tea "charm.land/bubbletea/v2"
+
 	"github.com/sectui/steep/internal/run"
 )
 
@@ -18,6 +20,23 @@ func TestSetRunAfterHits(t *testing.T) {
 	m.Add([]run.Hit{{N: 1}})
 	if h, ok := m.Selected(); !ok || h.N != 1 {
 		t.Fatalf("selected = %+v, %v", h, ok)
+	}
+}
+
+func TestMouseOpensOnlyWhenAlreadyFocused(t *testing.T) {
+	m := New(nil, nil)
+	m.SetRun("a", []run.Hit{{N: 1}})
+	click := tea.MouseClickMsg{Y: 1, Button: tea.MouseLeft} // row 0, below the column header
+
+	if cmd := m.Mouse(click, false); cmd != nil {
+		t.Fatalf("a click arriving from another pane must not open the row, got %T", cmd())
+	}
+	cmd := m.Mouse(click, true)
+	if cmd == nil {
+		t.Fatal("a click on the already-focused, already-selected row must open it")
+	}
+	if _, ok := cmd().(OpenMsg); !ok {
+		t.Fatalf("expected OpenMsg, got %T", cmd())
 	}
 }
 

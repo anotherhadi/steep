@@ -386,7 +386,7 @@ func (m *Model) mouse(msg tea.MouseMsg) tea.Cmd {
 		case paneEditor:
 			m.editor.Mouse(local)
 		case paneResults:
-			return m.results.Mouse(local)
+			return m.results.Mouse(local, wasFocused)
 		case paneResponse:
 			m.response.Mouse(local)
 		}

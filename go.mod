@@ -13,7 +13,7 @@ require (
 	github.com/knadh/koanf/parsers/yaml v1.1.1
 	github.com/knadh/koanf/providers/file v1.2.1
 	github.com/knadh/koanf/v2 v2.4.1
-	github.com/sectui/foam v0.0.4
+	github.com/sectui/foam v0.0.5
 	github.com/sectui/httpql v0.0.1
 	github.com/sectui/operations v0.0.1
 	github.com/spf13/pflag v1.0.10

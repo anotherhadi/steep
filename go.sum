@@ -83,8 +83,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/rivo/uniseg v0.4.7 h1:WUdvkW8uEhrYfLC4ZzdpI2ztxP1I582+49Oc5Mq64VQ=
 github.com/rivo/uniseg v0.4.7/go.mod h1:FN3SvrM+Zdj16jyLfmOkMNblXMcoc8DfTHruCPUcx88=
-github.com/sectui/foam v0.0.4 h1:8qyeSwymx38H1je2JSS+UM8+fOlwn5xZV4GrlPBzPPc=
-github.com/sectui/foam v0.0.4/go.mod h1:7o8jH4v+cq+wvdu+/eZz9Gdb161TejTXnYUjRCciAWk=
+github.com/sectui/foam v0.0.5 h1:348cuf1/00gG6TIv0D7ozC5VPEvz2AqSg4aoDkaydvo=
+github.com/sectui/foam v0.0.5/go.mod h1:7o8jH4v+cq+wvdu+/eZz9Gdb161TejTXnYUjRCciAWk=
 github.com/sectui/httpql v0.0.1 h1:LhhBEW/zOXqRR91E1hGGERbop5PdaSvWvzbVv3P1ziU=
 github.com/sectui/httpql v0.0.1/go.mod h1:fnS8V/4+Z3X4x4rOkKmMie0dS+5OdL1OaCkYvGTCMyQ=
 github.com/sectui/operations v0.0.1 h1:2qVzx1L6FgPWjSoFH6pdQuVecYqsY3ZsC3ujUaJoPVA=

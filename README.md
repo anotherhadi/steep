@@ -30,14 +30,14 @@ With go:
 go install github.com/anotherhadi/steep/cmd/steep@latest
 ```
 
-With Nix, from the [anotherhadi NUR](https://github.com/anotherhadi/nur):
+With Nix, from the [anotherhadi NUR](https://github.com/anotherhadi/nur-packages):
 
 ```sh
-nix run github:anotherhadi/nur#steep
+nix run github:anotherhadi/nur-packages#steep
 ```
 
 ```nix
-# flake: inputs.nur-anotherhadi.url = "github:anotherhadi/nur";
+# flake: inputs.nur-anotherhadi.url = "github:anotherhadi/nur-packages";
 environment.systemPackages = [ nur-anotherhadi.packages.${system}.steep ];
 
 # or through NUR

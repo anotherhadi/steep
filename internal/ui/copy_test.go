@@ -7,7 +7,7 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/steep/internal/ui/copypicker"
+	"github.com/anotherhadi/steep/internal/ui/copypicker"
 )
 
 func TestCopyText(t *testing.T) {

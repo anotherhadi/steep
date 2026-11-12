@@ -5,7 +5,7 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/steep/internal/run"
+	"github.com/anotherhadi/steep/internal/run"
 )
 
 // A new run replaces hits that were shown: nothing may point into the old ones.

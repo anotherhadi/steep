@@ -11,18 +11,18 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/foam/confirm"
-	"github.com/sectui/foam/notify"
-	"github.com/sectui/foam/overlay"
-	"github.com/sectui/foam/prompt"
-	"github.com/sectui/foam/vim"
+	"github.com/anotherhadi/foam/confirm"
+	"github.com/anotherhadi/foam/notify"
+	"github.com/anotherhadi/foam/overlay"
+	"github.com/anotherhadi/foam/prompt"
+	"github.com/anotherhadi/foam/vim"
 
-	"github.com/sectui/steep/internal/collection"
-	"github.com/sectui/steep/internal/curl"
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/run"
-	"github.com/sectui/steep/internal/ui/results"
-	"github.com/sectui/steep/internal/wordlist"
+	"github.com/anotherhadi/steep/internal/collection"
+	"github.com/anotherhadi/steep/internal/curl"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/run"
+	"github.com/anotherhadi/steep/internal/ui/results"
+	"github.com/anotherhadi/steep/internal/wordlist"
 )
 
 const newRequest = `GET / HTTP/1.1

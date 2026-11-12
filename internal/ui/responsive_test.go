@@ -9,14 +9,14 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/sectui/foam/notify"
-	"github.com/sectui/foam/theme"
+	"github.com/anotherhadi/foam/notify"
+	"github.com/anotherhadi/foam/theme"
 
-	"github.com/sectui/steep/internal/config"
-	"github.com/sectui/steep/internal/fuzz"
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/run"
-	"github.com/sectui/steep/internal/ui/response"
+	"github.com/anotherhadi/steep/internal/config"
+	"github.com/anotherhadi/steep/internal/fuzz"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/run"
+	"github.com/anotherhadi/steep/internal/ui/response"
 )
 
 // checkScreen asserts that the view fills w×h exactly. The renderer drops

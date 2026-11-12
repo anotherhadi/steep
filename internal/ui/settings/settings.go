@@ -3,9 +3,9 @@
 package settings
 
 import (
-	"github.com/sectui/foam/form"
+	"github.com/anotherhadi/foam/form"
 
-	"github.com/sectui/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/request"
 )
 
 // Request edits the settings of the request whose text Text and SetText

@@ -1,5 +1,5 @@
 // Package oppicker is an overlay that finds an operation of
-// github.com/sectui/operations, to put a block of it in the request.
+// github.com/anotherhadi/operations, to put a block of it in the request.
 package oppicker
 
 import (
@@ -10,16 +10,16 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/sectui/foam/commands"
-	"github.com/sectui/foam/draw"
-	"github.com/sectui/foam/fuzzy"
-	"github.com/sectui/foam/input"
-	"github.com/sectui/foam/list"
-	"github.com/sectui/foam/overlay"
-	"github.com/sectui/foam/theme"
-	"github.com/sectui/operations"
+	"github.com/anotherhadi/foam/commands"
+	"github.com/anotherhadi/foam/draw"
+	"github.com/anotherhadi/foam/fuzzy"
+	"github.com/anotherhadi/foam/input"
+	"github.com/anotherhadi/foam/list"
+	"github.com/anotherhadi/foam/overlay"
+	"github.com/anotherhadi/foam/theme"
+	"github.com/anotherhadi/operations"
 
-	"github.com/sectui/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/request"
 )
 
 type Model struct {

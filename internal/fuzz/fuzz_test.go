@@ -17,8 +17,8 @@ import (
 
 	"github.com/ffuf/ffuf/v2/pkg/ffuf"
 
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/run"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/run"
 )
 
 func init() { log.SetOutput(io.Discard) }

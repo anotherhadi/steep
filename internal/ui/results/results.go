@@ -17,20 +17,20 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/sectui/foam/commands"
-	"github.com/sectui/foam/draw"
-	"github.com/sectui/foam/highlight"
-	"github.com/sectui/foam/input"
-	"github.com/sectui/foam/list"
-	"github.com/sectui/foam/notify"
-	"github.com/sectui/foam/overlay"
-	"github.com/sectui/foam/theme"
-	"github.com/sectui/httpql"
+	"github.com/anotherhadi/foam/commands"
+	"github.com/anotherhadi/foam/draw"
+	"github.com/anotherhadi/foam/highlight"
+	"github.com/anotherhadi/foam/input"
+	"github.com/anotherhadi/foam/list"
+	"github.com/anotherhadi/foam/notify"
+	"github.com/anotherhadi/foam/overlay"
+	"github.com/anotherhadi/foam/theme"
+	"github.com/anotherhadi/httpql"
 
-	"github.com/sectui/steep/internal/config"
-	"github.com/sectui/steep/internal/fuzz"
-	"github.com/sectui/steep/internal/run"
-	"github.com/sectui/steep/internal/ui/picker"
+	"github.com/anotherhadi/steep/internal/config"
+	"github.com/anotherhadi/steep/internal/fuzz"
+	"github.com/anotherhadi/steep/internal/run"
+	"github.com/anotherhadi/steep/internal/ui/picker"
 )
 
 // OpenMsg asks to read the selected hit's response.

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sectui/operations/template"
+	"github.com/anotherhadi/operations/template"
 )
 
 func mustParse(t *testing.T, s string) *Body {

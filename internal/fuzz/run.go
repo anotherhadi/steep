@@ -18,8 +18,8 @@ import (
 	"github.com/ffuf/ffuf/v2/pkg/input"
 	"github.com/ffuf/ffuf/v2/pkg/runner"
 
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/run"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/run"
 )
 
 // Progress is ffuf's counter.

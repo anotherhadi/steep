@@ -9,11 +9,11 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/foam/highlight"
+	"github.com/anotherhadi/foam/highlight"
 
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/run"
-	"github.com/sectui/steep/internal/ui/picker"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/run"
+	"github.com/anotherhadi/steep/internal/ui/picker"
 )
 
 func TestMarks(t *testing.T) {

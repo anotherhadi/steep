@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	fconfig "github.com/sectui/foam/config"
+	fconfig "github.com/anotherhadi/foam/config"
 )
 
 // Resolve turns a wordlist path into a file path: "$name/rest" uses the

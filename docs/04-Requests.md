@@ -72,7 +72,7 @@ With several wordlists, `mode` decides how they combine:
 
 ## Operations
 
-Operations come from [operations](https://github.com/sectui/operations):
+Operations come from [operations](https://github.com/anotherhadi/operations):
 encodings, hashes, JWT, case... Press ctrl+e to insert one at the cursor, or to
 wrap the visual selection in it.
 

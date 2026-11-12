@@ -1,4 +1,4 @@
-module github.com/sectui/steep
+module github.com/anotherhadi/steep
 
 go 1.26.7
 
@@ -7,15 +7,15 @@ require (
 	charm.land/bubbletea/v2 v2.1.1
 	charm.land/lipgloss/v2 v2.0.6
 	github.com/adrg/xdg v0.4.0
+	github.com/anotherhadi/foam v0.0.6
+	github.com/anotherhadi/httpql v0.0.3
+	github.com/anotherhadi/operations v0.0.2
 	github.com/charmbracelet/x/ansi v0.11.9
 	github.com/ffuf/ffuf/v2 v2.3.0
 	github.com/fsnotify/fsnotify v1.10.1
 	github.com/knadh/koanf/parsers/yaml v1.1.1
 	github.com/knadh/koanf/providers/file v1.2.1
 	github.com/knadh/koanf/v2 v2.4.1
-	github.com/sectui/foam v0.0.5
-	github.com/sectui/httpql v0.0.1
-	github.com/sectui/operations v0.0.1
 	github.com/spf13/pflag v1.0.10
 	golang.org/x/net v0.60.0
 )

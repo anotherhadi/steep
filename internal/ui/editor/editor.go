@@ -7,17 +7,17 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/foam/commands"
-	"github.com/sectui/foam/draw"
-	feditor "github.com/sectui/foam/editor"
-	"github.com/sectui/foam/highlight"
-	"github.com/sectui/foam/overlay"
-	"github.com/sectui/foam/vim"
-	"github.com/sectui/operations"
-	"github.com/sectui/operations/template"
+	"github.com/anotherhadi/foam/commands"
+	"github.com/anotherhadi/foam/draw"
+	feditor "github.com/anotherhadi/foam/editor"
+	"github.com/anotherhadi/foam/highlight"
+	"github.com/anotherhadi/foam/overlay"
+	"github.com/anotherhadi/foam/vim"
+	"github.com/anotherhadi/operations"
+	"github.com/anotherhadi/operations/template"
 
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/ui/oppicker"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/ui/oppicker"
 )
 
 // PickMsg asks to pick a wordlist for the file{} block at Pos, or for a new

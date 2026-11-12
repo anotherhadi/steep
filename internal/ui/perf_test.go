@@ -7,7 +7,7 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/steep/internal/ui/response"
+	"github.com/anotherhadi/steep/internal/ui/response"
 )
 
 // budget is d, scaled for the race detector, which slows this code ~10x.

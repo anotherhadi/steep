@@ -7,7 +7,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/sectui/operations"
+	"github.com/anotherhadi/operations"
 )
 
 func typeText(m *Model, s string) {

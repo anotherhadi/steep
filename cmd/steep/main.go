@@ -12,12 +12,12 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	fconfig "github.com/sectui/foam/config"
-	"github.com/sectui/foam/theme"
+	fconfig "github.com/anotherhadi/foam/config"
+	"github.com/anotherhadi/foam/theme"
 
-	"github.com/sectui/steep/internal/config"
-	"github.com/sectui/steep/internal/curl"
-	"github.com/sectui/steep/internal/ui"
+	"github.com/anotherhadi/steep/internal/config"
+	"github.com/anotherhadi/steep/internal/curl"
+	"github.com/anotherhadi/steep/internal/ui"
 )
 
 func main() {

@@ -13,9 +13,9 @@ There are several layers, and the later wins:
 
 - the built-in defaults: foam's, then steep's
   [default.yaml](../internal/config/default.yaml)
-- `~/.config/sectui/config.yaml`, shared by every sectui tool. Some settings not
-  related to steep (nerd fonts, colorscheme, basic shortcuts) come from
-  [foam](https://github.com/sectui/foam)
+- `~/.config/foam/config.yaml`, shared by every [foam](https://github.com/anotherhadi/foam)
+  tool. Some settings not related to steep (nerd fonts, colorscheme, basic
+  shortcuts) come from foam
 - `~/.config/steep/config.yaml`, steep config on all collections
 - `<collection>/config.yaml`, only for the collection being opened
 - `STEEP_*` environment variables, e.g. `STEEP_REQUEST__CONCURRENCY=10`

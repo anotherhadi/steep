@@ -10,7 +10,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/sectui/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/request"
 )
 
 // Flags that describe the connection rather than the request: their value is

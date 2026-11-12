@@ -8,13 +8,13 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/sectui/foam/commands"
-	"github.com/sectui/foam/draw"
-	"github.com/sectui/foam/fuzzy"
-	"github.com/sectui/foam/input"
-	"github.com/sectui/foam/list"
-	"github.com/sectui/foam/overlay"
-	"github.com/sectui/foam/theme"
+	"github.com/anotherhadi/foam/commands"
+	"github.com/anotherhadi/foam/draw"
+	"github.com/anotherhadi/foam/fuzzy"
+	"github.com/anotherhadi/foam/input"
+	"github.com/anotherhadi/foam/list"
+	"github.com/anotherhadi/foam/overlay"
+	"github.com/anotherhadi/foam/theme"
 )
 
 type Item struct{ Name, Value string }

@@ -9,13 +9,13 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/sectui/foam/commands"
-	"github.com/sectui/foam/draw"
-	"github.com/sectui/foam/highlight"
-	"github.com/sectui/foam/theme"
-	ftree "github.com/sectui/foam/tree"
+	"github.com/anotherhadi/foam/commands"
+	"github.com/anotherhadi/foam/draw"
+	"github.com/anotherhadi/foam/highlight"
+	"github.com/anotherhadi/foam/theme"
+	ftree "github.com/anotherhadi/foam/tree"
 
-	"github.com/sectui/steep/internal/collection"
+	"github.com/anotherhadi/steep/internal/collection"
 )
 
 type OpenMsg = ftree.OpenMsg

@@ -9,18 +9,18 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/foam/commands"
-	"github.com/sectui/foam/confirm"
-	"github.com/sectui/foam/keys"
-	"github.com/sectui/foam/notify"
-	"github.com/sectui/foam/overlay"
+	"github.com/anotherhadi/foam/commands"
+	"github.com/anotherhadi/foam/confirm"
+	"github.com/anotherhadi/foam/keys"
+	"github.com/anotherhadi/foam/notify"
+	"github.com/anotherhadi/foam/overlay"
 
-	"github.com/sectui/steep/internal/curl"
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/run"
-	"github.com/sectui/steep/internal/ui/copypicker"
-	"github.com/sectui/steep/internal/ui/response"
-	"github.com/sectui/steep/internal/ui/results"
+	"github.com/anotherhadi/steep/internal/curl"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/run"
+	"github.com/anotherhadi/steep/internal/ui/copypicker"
+	"github.com/anotherhadi/steep/internal/ui/response"
+	"github.com/anotherhadi/steep/internal/ui/results"
 )
 
 // copyAskAbove is the size of a copy asked about first: terminals and tmux

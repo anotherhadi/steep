@@ -2,7 +2,7 @@
 #
 # Do not copy this file: put only what you change in one of these (later wins):
 #
-#   ~/.config/sectui/config.yaml       shared by every sectui tool (theme, keys)
+#   ~/.config/foam/config.yaml       shared by every foam tool (theme, keys)
 #   ~/.config/steep/config.yaml        steep, everywhere
 #   <collection>/config.yaml           the collection being opened
 #   STEEP_* environment variables      e.g. STEEP_REQUEST__CONCURRENCY=10

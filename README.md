@@ -14,7 +14,7 @@ Write a raw request, put `file{wordlist}` blocks where the values go, run it:
 **without leaving the terminal**.
 
 Steep replaces both the **intruder** and the **repeater** of Burp Suite (or
-Caido). It pairs well with [Spilltea](https://github.com/sectui/spilltea), which
+Caido). It pairs well with [Spilltea](https://github.com/anotherhadi/spilltea), which
 handles the proxy side: it intercepts requests, stores them, and lets you send
 them to steep to replay them.
 
@@ -27,24 +27,24 @@ Steep is made for **pentesters, bug bounty hunters and CTF enjoyers**!
 With go:
 
 ```sh
-go install github.com/sectui/steep/cmd/steep@latest
+go install github.com/anotherhadi/steep/cmd/steep@latest
 ```
 
-With Nix, from the [sectui NUR](https://github.com/sectui/nur):
+With Nix, from the [anotherhadi NUR](https://github.com/anotherhadi/nur):
 
 ```sh
-nix run github:sectui/nur#steep
+nix run github:anotherhadi/nur#steep
 ```
 
 ```nix
-# flake: inputs.nur-sectui.url = "github:sectui/nur";
-environment.systemPackages = [ nur-sectui.packages.${system}.steep ];
+# flake: inputs.nur-anotherhadi.url = "github:anotherhadi/nur";
+environment.systemPackages = [ nur-anotherhadi.packages.${system}.steep ];
 
 # or through NUR
-environment.systemPackages = [ pkgs.nur.repos.sectui.steep ];
+environment.systemPackages = [ pkgs.nur.repos.anotherhadi.steep ];
 ```
 
-Each [GitHub release](https://github.com/sectui/steep/releases) has an archive
+Each [GitHub release](https://github.com/anotherhadi/steep/releases) has an archive
 per platform (Linux, macOS and FreeBSD, amd64 and arm64) with the `steep`
 binary:
 
@@ -62,7 +62,7 @@ stored). Press `ctrl+enter` to send the request.
 
 To fuzz, add `file{~/my/path/to/wordlist.txt}`: each line of the file is one
 request. You can also use `list{admin,root}`, `range{1-500}`, `env{MY_ENV_VAR}`,
-and even the [sectui/operations](https://github.com/sectui/operations) syntax,
+and even the [anotherhadi/operations](https://github.com/anotherhadi/operations) syntax,
 like `to-base64{my payload}` or `url-encode{my payload}`. An operation around a
 wordlist is computed for each request:
 

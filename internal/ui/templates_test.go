@@ -14,7 +14,7 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/steep/internal/ui/oppicker"
+	"github.com/anotherhadi/steep/internal/ui/oppicker"
 )
 
 // openRequest creates a request with text and opens it in the editor.

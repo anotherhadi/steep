@@ -6,10 +6,10 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/foam/notify"
+	"github.com/anotherhadi/foam/notify"
 
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/run"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/run"
 )
 
 // No byte the outside world controls may reach the terminal as a control.

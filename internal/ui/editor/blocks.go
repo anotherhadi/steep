@@ -3,11 +3,11 @@ package editor
 import (
 	"unicode/utf8"
 
-	"github.com/sectui/operations/template"
+	"github.com/anotherhadi/operations/template"
 
-	"github.com/sectui/foam/highlight"
+	"github.com/anotherhadi/foam/highlight"
 
-	"github.com/sectui/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/request"
 )
 
 // Highlight colors a request file: its `# steep` block, and its blocks.

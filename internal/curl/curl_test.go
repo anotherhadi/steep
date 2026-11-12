@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sectui/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/request"
 )
 
 func TestParse(t *testing.T) {

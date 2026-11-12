@@ -16,12 +16,12 @@ import (
 	"charm.land/lipgloss/v2"
 	"github.com/adrg/xdg"
 
-	fconfig "github.com/sectui/foam/config"
-	"github.com/sectui/foam/draw"
-	"github.com/sectui/foam/geom"
-	"github.com/sectui/foam/notify"
-	"github.com/sectui/foam/shot"
-	"github.com/sectui/foam/theme"
+	fconfig "github.com/anotherhadi/foam/config"
+	"github.com/anotherhadi/foam/draw"
+	"github.com/anotherhadi/foam/geom"
+	"github.com/anotherhadi/foam/notify"
+	"github.com/anotherhadi/foam/shot"
+	"github.com/anotherhadi/foam/theme"
 )
 
 // shotCanvas draws the request and its response over the whole window, under

@@ -10,14 +10,14 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/foam/confirm"
-	"github.com/sectui/foam/notify"
-	"github.com/sectui/foam/overlay"
+	"github.com/anotherhadi/foam/confirm"
+	"github.com/anotherhadi/foam/notify"
+	"github.com/anotherhadi/foam/overlay"
 
-	"github.com/sectui/steep/internal/fuzz"
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/run"
-	"github.com/sectui/steep/internal/wordlist"
+	"github.com/anotherhadi/steep/internal/fuzz"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/run"
+	"github.com/anotherhadi/steep/internal/wordlist"
 )
 
 const tickEvery = 100 * time.Millisecond

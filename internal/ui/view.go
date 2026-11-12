@@ -8,14 +8,14 @@ import (
 	"charm.land/lipgloss/v2"
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/sectui/foam/draw"
-	"github.com/sectui/foam/geom"
-	"github.com/sectui/foam/highlight"
-	"github.com/sectui/foam/minsize"
-	"github.com/sectui/foam/theme"
+	"github.com/anotherhadi/foam/draw"
+	"github.com/anotherhadi/foam/geom"
+	"github.com/anotherhadi/foam/highlight"
+	"github.com/anotherhadi/foam/minsize"
+	"github.com/anotherhadi/foam/theme"
 
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/ui/editor"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/ui/editor"
 )
 
 // The collection is 32 cells wide, 24 below 140 columns, and hidden below

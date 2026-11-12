@@ -18,12 +18,12 @@ import (
 	"github.com/knadh/koanf/providers/file"
 	koanf "github.com/knadh/koanf/v2"
 
-	"github.com/sectui/foam"
-	"github.com/sectui/foam/commands"
-	fconfig "github.com/sectui/foam/config"
-	"github.com/sectui/foam/theme"
+	"github.com/anotherhadi/foam"
+	"github.com/anotherhadi/foam/commands"
+	fconfig "github.com/anotherhadi/foam/config"
+	"github.com/anotherhadi/foam/theme"
 
-	"github.com/sectui/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/request"
 )
 
 //go:embed default.yaml
@@ -234,7 +234,7 @@ func Load(args []string) (*Config, error) {
 		Usage: usage,
 		Base:  [][]byte{foam.Defaults, Defaults},
 		Files: []string{
-			filepath.Join(fconfig.Dir("sectui"), "config.yaml"),
+			filepath.Join(fconfig.Dir("foam"), "config.yaml"),
 			filepath.Join(fconfig.Dir("steep"), "config.yaml"),
 		},
 		Extra: func(get func(string) string) []string {

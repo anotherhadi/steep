@@ -4,9 +4,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sectui/foam/vim"
+	"github.com/anotherhadi/foam/vim"
 
-	"github.com/sectui/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/request"
 )
 
 // meaning is what s gives in a request: its blocks run, file{} as its path.

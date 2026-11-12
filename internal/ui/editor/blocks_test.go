@@ -6,7 +6,7 @@ import (
 
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/sectui/foam/highlight"
+	"github.com/anotherhadi/foam/highlight"
 )
 
 func roles(s string) []highlight.Role {

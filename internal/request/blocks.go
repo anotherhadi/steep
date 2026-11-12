@@ -8,12 +8,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sectui/operations"
-	"github.com/sectui/operations/template"
+	"github.com/anotherhadi/operations"
+	"github.com/anotherhadi/operations/template"
 )
 
 // A request body holds blocks: file{path} wordlists, and the operations of
-// github.com/sectui/operations, which may wrap them: to-base64{file{x.txt}}
+// github.com/anotherhadi/operations, which may wrap them: to-base64{file{x.txt}}
 // encodes each line of x.txt. An operation without a wordlist inside is
 // computed once per run, one with some for each request.
 

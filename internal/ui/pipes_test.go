@@ -6,9 +6,9 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/steep/internal/config"
-	"github.com/sectui/steep/internal/ui/picker"
-	"github.com/sectui/steep/internal/ui/response"
+	"github.com/anotherhadi/steep/internal/config"
+	"github.com/anotherhadi/steep/internal/ui/picker"
+	"github.com/anotherhadi/steep/internal/ui/response"
 )
 
 func TestPipePickerAndReset(t *testing.T) {

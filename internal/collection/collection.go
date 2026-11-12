@@ -12,7 +12,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/sectui/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/request"
 )
 
 const ext = ".http"

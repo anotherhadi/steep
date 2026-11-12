@@ -15,8 +15,8 @@ import (
 	"github.com/ffuf/ffuf/v2/pkg/ffuf"
 	"github.com/ffuf/ffuf/v2/pkg/filter"
 
-	"github.com/sectui/steep/internal/request"
-	"github.com/sectui/steep/internal/wordlist"
+	"github.com/anotherhadi/steep/internal/request"
+	"github.com/anotherhadi/steep/internal/wordlist"
 )
 
 type Spec struct {

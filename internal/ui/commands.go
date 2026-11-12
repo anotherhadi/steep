@@ -3,17 +3,17 @@ package ui
 import (
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/foam/commands"
-	"github.com/sectui/foam/form"
-	"github.com/sectui/foam/geom"
-	"github.com/sectui/foam/help"
-	"github.com/sectui/foam/overlay"
-	"github.com/sectui/foam/palette"
+	"github.com/anotherhadi/foam/commands"
+	"github.com/anotherhadi/foam/form"
+	"github.com/anotherhadi/foam/geom"
+	"github.com/anotherhadi/foam/help"
+	"github.com/anotherhadi/foam/overlay"
+	"github.com/anotherhadi/foam/palette"
 
-	"github.com/sectui/steep/internal/ui/copypicker"
-	"github.com/sectui/steep/internal/ui/oppicker"
-	"github.com/sectui/steep/internal/ui/picker"
-	"github.com/sectui/steep/internal/ui/settings"
+	"github.com/anotherhadi/steep/internal/ui/copypicker"
+	"github.com/anotherhadi/steep/internal/ui/oppicker"
+	"github.com/anotherhadi/steep/internal/ui/picker"
+	"github.com/anotherhadi/steep/internal/ui/settings"
 )
 
 func (m *Model) global() []commands.Command {

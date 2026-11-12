@@ -7,7 +7,7 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/sectui/foam/notify"
+	"github.com/anotherhadi/foam/notify"
 )
 
 // historyPath keeps the HTTPQL filters used, one per line, oldest first.

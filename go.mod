@@ -7,7 +7,7 @@ require (
 	charm.land/bubbletea/v2 v2.1.1
 	charm.land/lipgloss/v2 v2.0.6
 	github.com/adrg/xdg v0.4.0
-	github.com/anotherhadi/foam v0.0.6
+	github.com/anotherhadi/foam v0.0.7
 	github.com/anotherhadi/httpql v0.0.3
 	github.com/anotherhadi/operations v0.0.2
 	github.com/charmbracelet/x/ansi v0.11.9
